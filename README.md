@@ -17,11 +17,11 @@
 [![MCP](https://img.shields.io/badge/MCP-2024--11--05-blueviolet?style=for-the-badge&logo=anthropic&logoColor=white)](https://modelcontextprotocol.io)
 [![Claude](https://img.shields.io/badge/Claude-Desktop-orange?style=for-the-badge&logo=anthropic&logoColor=white)](https://claude.ai)
 [![Kali](https://img.shields.io/badge/Kali-Linux-557C94?style=for-the-badge&logo=kalilinux&logoColor=white)](https://kali.org)
-[![CI](https://img.shields.io/github/actions/workflow/status/ronanlucky/kali-ssh-mcp/ci.yml?style=for-the-badge&label=CI&logo=githubactions&logoColor=white)](https://github.com/ronanlucky/kali-ssh-mcp/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/ronankongala/kali-ssh-mcp/ci.yml?style=for-the-badge&label=CI&logo=githubactions&logoColor=white)](https://github.com/ronankongala/kali-ssh-mcp/actions)
 
 <br/>
 
-> **Give Claude a terminal.** This MCP bridge lets Claude Desktop SSH into a Kali Linux host and autonomously run commands, scan networks, inspect firewalls, and reason about results — all from a natural language conversation.
+> **Give Claude a terminal.** This MCP bridge lets Claude Desktop SSH into a Kali Linux host and autonomously run commands, scan networks, inspect firewalls, and reason about results -- all from a natural language conversation.
 
 <br/>
 
@@ -113,7 +113,7 @@ pip install paramiko
 ### 1️⃣ Clone
 
 ```bash
-git clone https://github.com/ronanlucky/kali-ssh-mcp.git
+git clone https://github.com/ronankongala/kali-ssh-mcp.git
 cd kali-ssh-mcp
 ```
 
