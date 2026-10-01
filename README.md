@@ -9,7 +9,7 @@
 ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝      ╚══════╝╚══════╝╚═╝  ╚═╝    ╚═╝     ╚═╝ ╚═════╝╚═╝     
 ```
 
-### 🔗 Claude Desktop ↔ Kali Linux via Model Context Protocol
+### Claude Desktop ↔ Kali Linux via Model Context Protocol
 
 <br/>
 
@@ -21,7 +21,7 @@
 
 <br/>
 
-> **Give Claude a terminal.** This MCP bridge lets Claude Desktop SSH into a Kali Linux host and autonomously run commands, scan networks, inspect firewalls, and reason about results -- all from a natural language conversation.
+> **Give Claude a terminal.** This MCP bridge lets Claude Desktop SSH into a Kali Linux host, run commands like nmap or iptables, and read the output back in the chat.
 
 <br/>
 
@@ -29,7 +29,7 @@
 
 ---
 
-## 📸 Demo
+## Demo
 
 <div align="center">
 
@@ -50,20 +50,20 @@
 
 ---
 
-## ⚡ What This Does
+## What This Does
 
-Once configured, Claude Desktop gains the ability to:
+The bridge exposes one tool, `run_command`, which runs a shell command on the Kali host and returns stdout and stderr. Example prompts:
 
-| Capability | Example Prompt |
+| Task | Example Prompt |
 |---|---|
-| 🔍 Network recon | `"Run nmap -sV against 192.168.3.1"` |
-| 🛡️ Firewall inspection | `"Check what iptables rules are active"` |
-| 🧠 Log analysis | `"Parse the last 50 lines of auth.log"` |
-| ⛓️ Command chaining | Claude autonomously pivots between tools |
+| Network recon | `"Run nmap -sV against 192.168.3.1"` |
+| Firewall inspection | `"Check what iptables rules are active"` |
+| Log analysis | `"Parse the last 50 lines of auth.log"` |
+| Follow-up | `"Which of those open ports look unexpected?"` (Claude reads the earlier output and runs the next command itself) |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────┐
@@ -96,7 +96,7 @@ Once configured, Claude Desktop gains the ability to:
 
 ---
 
-## 🚀 Setup
+## Setup
 
 ### Prerequisites
 
@@ -110,14 +110,14 @@ pip install paramiko
 
 ---
 
-### 1️⃣ Clone
+### 1. Clone
 
 ```bash
 git clone https://github.com/ronankongala/kali-ssh-mcp.git
 cd kali-ssh-mcp
 ```
 
-### 2️⃣ Configure SSH target
+### 2. Configure SSH target
 
 Edit the top of `mcp_bridge.py`:
 
@@ -125,10 +125,10 @@ Edit the top of `mcp_bridge.py`:
 SSH_HOST = "192.168.x.x"    # Your Kali IP
 SSH_PORT = 22
 SSH_USER = "kali"
-SSH_PASS = "kali"           # ⚠️ Use key-based auth in production
+SSH_PASS = "kali"           # Use key-based auth outside a lab
 ```
 
-### 3️⃣ Add to Claude Desktop
+### 3. Add to Claude Desktop
 
 Open **Claude Desktop → Settings → Developer → Edit Config** and add:
 
@@ -143,15 +143,15 @@ Open **Claude Desktop → Settings → Developer → Edit Config** and add:
 }
 ```
 
-### 4️⃣ Restart Claude Desktop
+### 4. Restart Claude Desktop
 
-The `kali-ssh` server should appear as **🟢 running** in Developer settings.
+The `kali-ssh` server should show as **running** in Developer settings.
 
 ---
 
-## 💬 Usage
+## Usage
 
-Just talk to Claude naturally:
+Example prompts:
 
 ```
 Use the run_command tool to run: nmap -sV 192.168.3.1
@@ -163,18 +163,18 @@ Run: sudo iptables -L -n | head -50
 Check who is currently logged into the system
 ```
 
-Claude executes over SSH and reasons about the output inline.
+Claude runs each command over SSH and works from the output in the same reply.
 
 ---
 
-## 📁 File Structure
+## File Structure
 
 ```
 kali-ssh-mcp/
-├── 📄 mcp_bridge.py          # MCP server + SSH bridge
-├── 📄 README.md
-├── 📄 .gitignore
-└── 📂 screenshots/
+├── .github/workflows/ci.yml
+├── mcp_bridge.py          # MCP server + SSH bridge
+├── README.md
+└── screenshots/
     ├── mcp-config.png
     ├── claude-connected-kali.png
     ├── whoami-result.png
@@ -184,19 +184,6 @@ kali-ssh-mcp/
 
 ---
 
-## ⚠️ Security Notes
+## Security Notes
 
-> This tool is intended for **lab and CTF environments only.**
-
-- 🔑 Use key-based SSH authentication in production
-- 🔒 Restrict SSH access to trusted hosts only  
-- 🚫 Never run against systems without explicit permission
-- 📋 All commands are logged to `mcp_bridge.log`
-
----
-
-<div align="center">
-
-Built for security research and lab environments · Powered by [Anthropic MCP](https://modelcontextprotocol.io)
-
-</div>
+This is for lab and CTF environments. The sample config uses the default Kali password, so switch to key-based SSH and limit which hosts can reach port 22 before using it anywhere else. Only point it at systems you have permission to test. Every command is logged to `mcp_bridge.log`.
